@@ -956,6 +956,50 @@ section#manual a p {
 
 /*
  ------------------------------------------------------------------------------
+ Index > Section: Admin
+ ------------------------------------------------------------------------------
+ */
+section#admin {
+  margin: 2rem 0 1rem;
+}
+
+section#admin a {
+  margin: auto;
+  display: block;
+  padding: 0.25rem 0 0.25rem 2rem;
+  background: url("icons/command.svg") no-repeat left center;
+  font-weight: bold;
+}
+
+section#admin a p {
+  margin: 0;
+}
+
+/*
+ ------------------------------------------------------------------------------
+ Admin > Section: Services
+ ------------------------------------------------------------------------------
+ */
+section#services ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+section#services li {
+  margin-bottom: 0.5em;
+  padding: 0.25rem 0 0.25rem 2rem;
+}
+
+section#services li.enabled {
+  background: url("icons/cloud.svg") no-repeat left center;
+}
+
+section#services li.disabled {
+  background: url("icons/cloud-off.svg") no-repeat left center;
+}
+
+/*
+ ------------------------------------------------------------------------------
  Drives page
  ------------------------------------------------------------------------------
  */
