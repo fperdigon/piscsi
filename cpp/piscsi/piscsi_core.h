@@ -20,7 +20,7 @@
 #include "spdlog/sinks/stdout_color_sinks.h"
 #include <span>
 #include <string>
-#include <atomic>
+#include <mutex>
 
 using namespace std;
 
@@ -59,8 +59,7 @@ private:
 
 	static PbDeviceType ParseDeviceType(const string&);
 
-	// Processing flag
-	atomic_bool target_is_active;
+	mutex execution_locker;
 
 	string access_token;
 

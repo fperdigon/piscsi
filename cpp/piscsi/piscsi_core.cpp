@@ -452,12 +452,10 @@ bool Piscsi::ExecuteCommand(const CommandContext& context)
 		// TODO What happens when the target becomes active while the command is still being executed?
 		// A field 'mutex locker' can probably avoid SCSI commands and ProcessCmd() being executed at the same time
 		default:
-			// TODO Find a better way to wait
-			const timespec ts = { .tv_sec = 0, .tv_nsec = 500'000'000};
-			while (target_is_active) {
-				nanosleep(&ts, nullptr);
-			}
-			return executor->ProcessCmd(context);
+			execution_locker.lock();
+			const bool status = executor->ProcessCmd(context);
+			execution_locker.unlock();
+			return status;
 	}
 
 	return true;
@@ -589,7 +587,7 @@ void Piscsi::Process()
 
 		// Only process the SCSI command if the bus is not busy and no other device responded
 		if (IsNotBusy() && bus->GetSEL()) {
-			target_is_active = true;
+			execution_locker.lock();
 
 			// Process command on the responsible controller based on the current initiator and target ID
 			if (const auto shutdown_mode = controller_manager.ProcessOnController(bus->GetDAT());
@@ -598,7 +596,7 @@ void Piscsi::Process()
 				ShutDown(shutdown_mode);
 			}
 
-			target_is_active = false;
+			execution_locker.unlock();
 		}
 	}
 }
