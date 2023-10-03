@@ -450,10 +450,8 @@ bool Piscsi::ExecuteCommand(const CommandContext& context)
 
 		// The remaining commands can only be executed when the target is idle
 		default:
-			execution_locker.lock();
-			const bool status = executor->ProcessCmd(context);
-			execution_locker.unlock();
-			return status;
+			scoped_lock<mutex> lock(execution_locker);
+			return executor->ProcessCmd(context);
 	}
 
 	return true;
@@ -585,7 +583,7 @@ void Piscsi::Process()
 
 		// Only process the SCSI command if the bus is not busy and no other device responded
 		if (IsNotBusy() && bus->GetSEL()) {
-			execution_locker.lock();
+			scoped_lock<mutex> lock(execution_locker);
 
 			// Process command on the responsible controller based on the current initiator and target ID
 			if (const auto shutdown_mode = controller_manager.ProcessOnController(bus->GetDAT());
@@ -593,8 +591,6 @@ void Piscsi::Process()
 				// When the bus is free PiSCSI or the Pi may be shut down.
 				ShutDown(shutdown_mode);
 			}
-
-			execution_locker.unlock();
 		}
 	}
 }
