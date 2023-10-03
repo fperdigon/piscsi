@@ -308,8 +308,10 @@ bool Piscsi::SetLogLevel(const string& log_level) const
 	return true;
 }
 
-bool Piscsi::ExecuteCommand(const CommandContext& context)
+bool Piscsi::ExecuteCommand(CommandContext& context)
 {
+	context.SetDefaultFolder(piscsi_image.GetDefaultFolder());
+
 	const PbCommand& command = context.GetCommand();
 
 	if (!access_token.empty() && access_token != GetParam(command, "token")) {
@@ -488,7 +490,7 @@ int Piscsi::run(span<char *> args)
 		return EXIT_FAILURE;
 	}
 
-	if (const string error = service.Init([this] (const CommandContext& context) { return ExecuteCommand(context); }, port);
+	if (const string error = service.Init([this] (CommandContext& context) { return ExecuteCommand(context); }, port);
 		!error.empty()) {
 		cerr << "Error: " << error << endl;
 
