@@ -26,6 +26,8 @@ public:
 	PiscsiExecutor(BUS& bus, ControllerManager& controller_manager) : bus(bus), controller_manager(controller_manager) {}
 	~PiscsiExecutor() = default;
 
+	// TODO At least some of these methods should be private, currently they are directly called by the unit tests
+
 	auto GetReservedIds() const { return reserved_ids; }
 
 	bool ProcessDeviceCmd(const CommandContext&, const PbDeviceDefinition&, bool);
