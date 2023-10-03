@@ -25,7 +25,6 @@ using namespace spdlog;
 using namespace protobuf_util;
 using namespace piscsi_util;
 
-// Device-specific commands
 bool PiscsiExecutor::ProcessDeviceCmd(const CommandContext& context, const PbDeviceDefinition& pb_device, bool dryRun)
 {
 	spdlog::info((dryRun ? "Validating: " : "Executing: ") + PrintCommand(context.GetCommand(), pb_device));
@@ -89,7 +88,6 @@ bool PiscsiExecutor::ProcessDeviceCmd(const CommandContext& context, const PbDev
 	return true;
 }
 
-// Non device-specific commands
 bool PiscsiExecutor::ProcessCmd(const CommandContext& context)
 {
 	const PbCommand& command = context.GetCommand();
