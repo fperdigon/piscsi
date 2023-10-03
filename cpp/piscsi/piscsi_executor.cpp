@@ -14,7 +14,6 @@
 #include "devices/device_factory.h"
 #include "devices/primary_device.h"
 #include "devices/disk.h"
-#include "piscsi_image.h"
 #include "localizer.h"
 #include "command_context.h"
 #include "piscsi_executor.h"
