@@ -33,6 +33,7 @@
 
 using namespace std;
 using namespace filesystem;
+using namespace spdlog;
 using namespace piscsi_interface;
 using namespace piscsi_util;
 using namespace protobuf_util;
@@ -71,7 +72,7 @@ bool Piscsi::InitBus()
 		return false;
 	}
 
-	executor = make_unique<PiscsiExecutor>(piscsi_image, *bus, controller_manager);
+	executor = make_unique<PiscsiExecutor>(*bus, controller_manager);
 
 	return true;
 }
@@ -429,11 +430,21 @@ bool Piscsi::ExecuteCommand(const CommandContext& context)
 		// TODO The image operations below can most likely directly be executed without calling the executor,
 		// because they do not require the target to be idle
 		case CREATE_IMAGE:
+			return piscsi_image.CreateImage(context);
+
 		case DELETE_IMAGE:
+			return piscsi_image.DeleteImage(context);
+
 		case RENAME_IMAGE:
+			return piscsi_image.RenameImage(context);
+
 		case COPY_IMAGE:
+			return piscsi_image.CopyImage(context);
+
 		case PROTECT_IMAGE:
 		case UNPROTECT_IMAGE:
+			return piscsi_image.SetImagePermissions(context);
+
 		case RESERVE_IDS:
 			return executor->ProcessCmd(context);
 

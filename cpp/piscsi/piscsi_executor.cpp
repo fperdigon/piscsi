@@ -25,6 +25,7 @@ using namespace spdlog;
 using namespace protobuf_util;
 using namespace piscsi_util;
 
+// Device-specific commands
 bool PiscsiExecutor::ProcessDeviceCmd(const CommandContext& context, const PbDeviceDefinition& pb_device, bool dryRun)
 {
 	spdlog::info((dryRun ? "Validating: " : "Executing: ") + PrintCommand(context.GetCommand(), pb_device));
@@ -88,6 +89,7 @@ bool PiscsiExecutor::ProcessDeviceCmd(const CommandContext& context, const PbDev
 	return true;
 }
 
+// Non device-specific commands
 bool PiscsiExecutor::ProcessCmd(const CommandContext& context)
 {
 	const PbCommand& command = context.GetCommand();
@@ -105,22 +107,6 @@ bool PiscsiExecutor::ProcessCmd(const CommandContext& context)
 
 			return context.ReturnSuccessStatus();
 		}
-
-		case CREATE_IMAGE:
-			return piscsi_image.CreateImage(context);
-
-		case DELETE_IMAGE:
-			return piscsi_image.DeleteImage(context);
-
-		case RENAME_IMAGE:
-			return piscsi_image.RenameImage(context);
-
-		case COPY_IMAGE:
-			return piscsi_image.CopyImage(context);
-
-		case PROTECT_IMAGE:
-		case UNPROTECT_IMAGE:
-			return piscsi_image.SetImagePermissions(context);
 
 		default:
 			// This is a device-specific command handled below

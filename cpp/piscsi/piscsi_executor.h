@@ -14,20 +14,16 @@
 #include "piscsi/piscsi_response.h"
 #include <unordered_set>
 
-class PiscsiImage;
 class DeviceFactory;
 class PrimaryDevice;
 class StorageDevice;
 class CommandContext;
 
-using namespace spdlog;
-
 class PiscsiExecutor
 {
 public:
 
-	PiscsiExecutor(PiscsiImage& piscsi_image, BUS& bus, ControllerManager& controller_manager)
-		: piscsi_image(piscsi_image), bus(bus), controller_manager(controller_manager) {}
+	PiscsiExecutor(BUS& bus, ControllerManager& controller_manager) : bus(bus), controller_manager(controller_manager) {}
 	~PiscsiExecutor() = default;
 
 	auto GetReservedIds() const { return reserved_ids; }
@@ -61,8 +57,6 @@ private:
 	static bool CheckForReservedFile(const CommandContext&, const string&);
 
 	const PiscsiResponse piscsi_response;
-
-	PiscsiImage& piscsi_image;
 
 	BUS& bus;
 
