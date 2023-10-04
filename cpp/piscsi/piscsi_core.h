@@ -10,7 +10,6 @@
 #pragma once
 
 #include "controllers/controller_manager.h"
-#include "controllers/abstract_controller.h"
 #include "piscsi/command_context.h"
 #include "piscsi/piscsi_service.h"
 #include "piscsi/piscsi_image.h"
