@@ -128,7 +128,7 @@ OBJ_SCSILOOP  := $(addprefix $(OBJDIR)/,$(notdir $(SRC_SCSILOOP:%.cpp=%.o)))
 OBJ_SHARED := $(addprefix $(OBJDIR)/,$(notdir $(SRC_SHARED:%.cpp=%.o)))
 OBJ_GENERATED := $(addprefix $(OBJDIR)/,$(notdir $(SRC_GENERATED:%.cpp=%.o)))
 
-LIB_PISCSI_CORE = $(LIBDIR)/libpiscsi.a
+LIB_PISCSI_CORE = $(LIBDIR)/libpiscsi_core.a
 LIB_SHARED = $(LIBDIR)/libshared.a
 
 GENERATED_DIR = generated
