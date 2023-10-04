@@ -9,6 +9,7 @@
 *.html
 piscsi.dat
 obj
+lib
 bin
 coverage
 generated
