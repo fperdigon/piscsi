@@ -275,7 +275,7 @@ void PiscsiResponse::GetMappingInfo(PbMappingInfo& mapping_info) const
 
 void PiscsiResponse::GetStatisticsInfo(PbStatisticsInfo& statistics_info) const
 {
-	for (const auto& [category, item] : Disk::GetStatistics()) {
+	for (const auto& [category, item] : collector.GetStatistics()) {
 		auto statistics = statistics_info.add_statistics();
 		statistics->set_category(category);
 		statistics->set_key(item.first);

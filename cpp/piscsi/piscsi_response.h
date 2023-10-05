@@ -11,6 +11,7 @@
 
 #include "devices/device_factory.h"
 #include "devices/primary_device.h"
+#include "piscsi/statistics_collector.h"
 #include "generated/piscsi_interface.pb.h"
 #include <string>
 #include <span>
@@ -46,6 +47,8 @@ private:
 	inline static const vector<string> EMPTY_VECTOR;
 
 	const DeviceFactory device_factory;
+
+	const StatisticsCollector collector;
 
 	void GetDeviceProperties(const Device&, PbDeviceProperties&) const;
 	void GetDevice(const Device&, PbDevice&, const string&) const;
