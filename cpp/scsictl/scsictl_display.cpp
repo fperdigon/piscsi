@@ -237,7 +237,7 @@ string ScsictlDisplay::DisplayStatisticsInfo(const PbStatisticsInfo& statistics_
 
 	s << "Statistics:\n";
 
-	map<string, PbStatistics> sorted_statistics;
+	map<string, PbStatistics, less<>> sorted_statistics;
 	for (const auto& statistics : statistics_info.statistics()) {
 		sorted_statistics[statistics.key()] = statistics;
 	}
