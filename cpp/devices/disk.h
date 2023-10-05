@@ -42,7 +42,6 @@ class Disk : public StorageDevice, private ScsiBlockCommands
 	// Sector size shift count (9=512, 10=1024, 11=2048, 12=4096)
 	uint32_t size_shift_count = 0;
 
-	// TODO Create a statistics struct
 	inline static uint32_t sector_read_count = 0;
 	inline static uint32_t sector_write_count = 0;
 
