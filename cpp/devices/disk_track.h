@@ -55,6 +55,8 @@ public:
 	DiskTrack(DiskTrack&) = delete;
 	DiskTrack& operator=(const DiskTrack&) = delete;
 
+	static statistics_map GetStatistics();
+
 private:
 
 	friend class DiskCache;
@@ -68,6 +70,4 @@ private:
 	bool WriteSector(span<const uint8_t> buf, int);			// Sector Write
 
 	int GetTrack() const		{ return dt.track; }		// Get track
-
-	static statistics_map GetStatistics();
 };

@@ -27,6 +27,12 @@ class DiskCache
 	// Number of tracks to cache
 	static const int CACHE_MAX = 16;
 
+	inline static uint32_t read_error_count = 0;
+	inline static uint32_t write_error_count = 0;
+
+	inline static const string READ_ERROR_COUNT = "read_error_count";
+	inline static const string WRITE_ERROR_COUNT = "write_error_count";
+
 public:
 
 	// Internal data definition
@@ -40,12 +46,11 @@ public:
 
 	void SetRawMode(bool b) { cd_raw = b; }		// CD-ROM raw mode setting
 
-	// Access
 	bool Save() const;							// Save and release all
 	bool ReadSector(span<uint8_t>, uint32_t);			// Sector Read
 	bool WriteSector(span<const uint8_t>, uint32_t);	// Sector Write
 
-	static statistics_map GetStatistics() { return DiskTrack::GetStatistics(); }
+	static statistics_map GetStatistics();
 
 private:
 

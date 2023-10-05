@@ -11,8 +11,9 @@
 
 statistics_map StatisticsCollector::GetStatistics() const
 {
-	statistics_map statistics = Disk::GetStatistics();
+	statistics_map statistics = DiskTrack::GetStatistics();
 	statistics.merge(DiskCache::GetStatistics());
+	statistics.merge(Disk::GetStatistics());
 
 	return statistics;
 }

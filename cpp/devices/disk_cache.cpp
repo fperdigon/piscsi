@@ -156,17 +156,16 @@ bool DiskCache::Load(int index, int track, shared_ptr<DiskTrack> disktrk)
 		sectors = 0x100;
 	}
 
-	// Create a disk track
 	if (disktrk == nullptr) {
 		disktrk = make_shared<DiskTrack>();
 	}
 
-	// Initialize disk track
 	disktrk->Init(track, sec_size, sectors, cd_raw, imgoffset);
 
 	// Try loading
 	if (!disktrk->Load(sec_path)) {
-		// Failure
+		++read_error_count;
+
 		return false;
 	}
 
@@ -190,3 +189,12 @@ void DiskCache::UpdateSerialNumber()
 	}
 }
 
+statistics_map DiskCache::GetStatistics()
+{
+	statistics_map statistics;
+
+	statistics.emplace(PbStatisticsCategory::ERROR, make_pair(READ_ERROR_COUNT, read_error_count));
+	statistics.emplace(PbStatisticsCategory::ERROR, make_pair(WRITE_ERROR_COUNT, write_error_count));
+
+	return statistics;
+}
