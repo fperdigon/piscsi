@@ -25,8 +25,6 @@
 using namespace std;
 using namespace piscsi_interface;
 
-using statistics_map = unordered_multimap<PbStatisticsCategory, pair<string, uint32_t>>;
-
 class DiskTrack
 {
 	 struct {
@@ -55,7 +53,7 @@ public:
 	DiskTrack(DiskTrack&) = delete;
 	DiskTrack& operator=(const DiskTrack&) = delete;
 
-	static statistics_map GetStatistics();
+	static vector<PbStatistics> GetStatistics();
 
 private:
 

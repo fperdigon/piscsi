@@ -716,12 +716,20 @@ bool Disk::SetConfiguredSectorSize(const DeviceFactory& device_factory, uint32_t
 	return true;
 }
 
-statistics_map Disk::GetStatistics()
+vector<PbStatistics> Disk::GetStatistics()
 {
-	statistics_map statistics;
+	vector<PbStatistics> statistics;
 
-	statistics.emplace(PbStatisticsCategory::INFO, make_pair(SECTOR_READ_COUNT, sector_read_count));
-	statistics.emplace(PbStatisticsCategory::INFO, make_pair(SECTOR_WRITE_COUNT, sector_write_count));
+	PbStatistics s;
+	s.set_category(PbStatisticsCategory::INFO);
+
+	s.set_key(SECTOR_READ_COUNT);
+	s.set_value(sector_read_count);
+	statistics.push_back(s);
+
+	s.set_key(SECTOR_WRITE_COUNT);
+	s.set_value(sector_write_count);
+	statistics.push_back(s);
 
 	return statistics;
 }

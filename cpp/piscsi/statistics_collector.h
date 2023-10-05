@@ -11,6 +11,8 @@
 
 #include "devices/disk.h"
 
+using namespace piscsi_interface;
+
 class StatisticsCollector
 {
 	friend class PiscsiResponse;
@@ -18,5 +20,5 @@ class StatisticsCollector
 	StatisticsCollector() = default;
 	~StatisticsCollector() = default;
 
-	statistics_map GetStatistics() const;
+	vector<PbStatistics> GetStatistics() const;
 };

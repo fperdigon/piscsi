@@ -189,12 +189,20 @@ void DiskCache::UpdateSerialNumber()
 	}
 }
 
-statistics_map DiskCache::GetStatistics()
+vector<PbStatistics> DiskCache::GetStatistics()
 {
-	statistics_map statistics;
+	vector<PbStatistics> statistics;
 
-	statistics.emplace(PbStatisticsCategory::ERROR, make_pair(READ_ERROR_COUNT, read_error_count));
-	statistics.emplace(PbStatisticsCategory::ERROR, make_pair(WRITE_ERROR_COUNT, write_error_count));
+	PbStatistics s;
+	s.set_category(PbStatisticsCategory::ERROR);
+
+	s.set_key(READ_ERROR_COUNT);
+	s.set_value(read_error_count);
+	statistics.push_back(s);
+
+	s.set_key(WRITE_ERROR_COUNT);
+	s.set_value(write_error_count);
+	statistics.push_back(s);
 
 	return statistics;
 }

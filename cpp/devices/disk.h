@@ -68,7 +68,7 @@ public:
 	bool SetConfiguredSectorSize(const DeviceFactory&, uint32_t);
 	void FlushCache() override;
 
-	static statistics_map GetStatistics();
+	static vector<PbStatistics> GetStatistics();
 
 private:
 

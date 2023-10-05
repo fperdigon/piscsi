@@ -9,11 +9,13 @@
 
 #include "statistics_collector.h"
 
-statistics_map StatisticsCollector::GetStatistics() const
+vector<PbStatistics> StatisticsCollector::GetStatistics() const
 {
-	statistics_map statistics = DiskTrack::GetStatistics();
-	statistics.merge(DiskCache::GetStatistics());
-	statistics.merge(Disk::GetStatistics());
+	auto statistics = DiskTrack::GetStatistics();
+	auto s = DiskCache::GetStatistics();
+	statistics.insert(statistics.end(), s.begin(), s.end());
+	s = Disk::GetStatistics();
+	statistics.insert(statistics.end(), s.begin(), s.end());
 
 	return statistics;
 }

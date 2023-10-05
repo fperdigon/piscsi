@@ -276,12 +276,20 @@ bool DiskTrack::WriteSector(span<const uint8_t> buf, int sec)
 	return true;
 }
 
-statistics_map DiskTrack::GetStatistics()
+vector<PbStatistics> DiskTrack::GetStatistics()
 {
-	statistics_map statistics;
+	vector<PbStatistics> statistics;
 
-	statistics.emplace(PbStatisticsCategory::INFO, make_pair(CACHE_MISS_READ_COUNT, cache_miss_read_count));
-	statistics.emplace(PbStatisticsCategory::INFO, make_pair(CACHE_MISS_WRITE_COUNT, cache_miss_write_count));
+	PbStatistics s;
+	s.set_category(PbStatisticsCategory::INFO);
+
+	s.set_key(CACHE_MISS_READ_COUNT);
+	s.set_value(cache_miss_read_count);
+	statistics.push_back(s);
+
+	s.set_key(CACHE_MISS_WRITE_COUNT);
+	s.set_value(cache_miss_write_count);
+	statistics.push_back(s);
 
 	return statistics;
 }

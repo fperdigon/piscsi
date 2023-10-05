@@ -15,12 +15,14 @@
 
 #pragma once
 
+#include "generated/piscsi_interface.pb.h"
 #include <span>
 #include <array>
 #include <memory>
 #include <string>
 
 using namespace std;
+using namespace piscsi_interface;
 
 class DiskCache
 {
@@ -50,7 +52,7 @@ public:
 	bool ReadSector(span<uint8_t>, uint32_t);			// Sector Read
 	bool WriteSector(span<const uint8_t>, uint32_t);	// Sector Write
 
-	static statistics_map GetStatistics();
+	static vector<PbStatistics> GetStatistics();
 
 private:
 

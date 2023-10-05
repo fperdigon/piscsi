@@ -275,11 +275,11 @@ void PiscsiResponse::GetMappingInfo(PbMappingInfo& mapping_info) const
 
 void PiscsiResponse::GetStatisticsInfo(PbStatisticsInfo& statistics_info) const
 {
-	for (const auto& [category, item] : collector.GetStatistics()) {
-		auto statistics = statistics_info.add_statistics();
-		statistics->set_category(category);
-		statistics->set_key(item.first);
-		statistics->set_value(item.second);
+	for (const auto& statistics : collector.GetStatistics()) {
+		auto s = statistics_info.add_statistics();
+		s->set_category(statistics.category());
+		s->set_key(statistics.key());
+		s->set_value(statistics.value());
 	}
 }
 
