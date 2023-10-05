@@ -192,6 +192,10 @@ enum PbOperation {
     OPERATION_INFO = 31;
 
     // Get statistics (PbStatisticsInfo)
+    // Parameters:
+    //   "category": optional statistics category to return, one of
+    //     "info"
+    //     "error"
     STATISTICS_INFO = 32;
 }
 
@@ -322,7 +326,9 @@ enum PbStatisticsCategory {
 
 message PbStatistics {
     PbStatisticsCategory category = 1;
-    // A symbolic unique item name
+    // A symbolic unique item name, may be used for I18N. Possible values:
+    //  "sector_read_count"
+    //  "sector_write_count"
     string key = 2;
     uint32 value = 3;
 }
