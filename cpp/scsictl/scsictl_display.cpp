@@ -246,7 +246,7 @@ string ScsictlDisplay::DisplayStatisticsInfo(const PbStatisticsInfo& statistics_
 			sorted_categories.emplace(category_name, statistics);
 		}
 
-		auto sorted_statistics = sorted_categories.find(category_name);
+		const auto& sorted_statistics = sorted_categories.find(category_name);
 		assert(sorted_statistics != sorted_categories.end());
 		sorted_statistics->second[statistics.key()] = statistics;
 	}
