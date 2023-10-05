@@ -237,29 +237,23 @@ string ScsictlDisplay::DisplayStatisticsInfo(const PbStatisticsInfo& statistics_
 
 	s << "Statistics:\n";
 
-	multimap<PbStatisticsCategory, map<string, PbStatistics, less<>>, greater<>> sorted_categories;
+	vector<PbStatistics> sorted_statistics;
 	for (const auto& statistics : statistics_info.statistics()) {
-
-		if (!sorted_categories.contains(statistics.category())) {
-			map<string, PbStatistics, less<>> sorted_statistics;
-			sorted_categories.emplace(statistics.category(), sorted_statistics);
-		}
-
-		const auto& sorted_statistics = sorted_categories.find(statistics.category());
-		assert(sorted_statistics != sorted_categories.end());
-		sorted_statistics->second[statistics.key()] = statistics;
+		sorted_statistics.push_back(statistics);
 	}
 
+	// Sort by descending category and ascending key
+	ranges::sort(sorted_statistics, [] (const PbStatistics& a, const PbStatistics& b)
+			{ return a.category() > b.category() || a.key() < b.key(); } );
+
 	PbStatisticsCategory prev_category;
-	for (const auto& [category, sorted_statistics] : sorted_categories) {
-		if (category != prev_category) {
-			s << "  " << PbStatisticsCategory_Name(category) << '\n';
-			prev_category = category;
+	for (const auto& statistics : sorted_statistics) {
+		if (statistics.category() != prev_category) {
+			s << "  " << PbStatisticsCategory_Name(statistics.category()) << '\n';
+			prev_category = statistics.category();
 		}
 
-		for (const auto& [key, statistics] : sorted_statistics) {
-			s << "    " << key << ": " << statistics.value() << '\n';
-		}
+		s << "    " << statistics.key() << ": " << statistics.value() << '\n';
 	}
 
 	return s.str();
