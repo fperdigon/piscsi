@@ -237,7 +237,7 @@ void PiscsiResponse::GetServerInfo(PbServerInfo& server_info, const unordered_se
 	GetAvailableImages(server_info, default_folder, folder_pattern, file_pattern, scan_depth);
 	GetNetworkInterfacesInfo(*server_info.mutable_network_interfaces_info());
 	GetMappingInfo(*server_info.mutable_mapping_info());
-	GetStatisticsInfo(*server_info.mutable_statistics_info());
+	GetStatisticsInfo(*server_info.mutable_statistics_info(), PbStatisticsCategory::NONE);
 	GetDevices(devices, server_info, default_folder);
 	GetReservedIds(*server_info.mutable_reserved_ids_info(), reserved_ids);
 	GetOperationInfo(*server_info.mutable_operation_info(), scan_depth);
@@ -273,13 +273,15 @@ void PiscsiResponse::GetMappingInfo(PbMappingInfo& mapping_info) const
 	}
 }
 
-void PiscsiResponse::GetStatisticsInfo(PbStatisticsInfo& statistics_info) const
+void PiscsiResponse::GetStatisticsInfo(PbStatisticsInfo& statistics_info, PbStatisticsCategory statistics_category) const
 {
 	for (const auto& [category, item] : Disk::GetStatistics()) {
-		auto statistics = statistics_info.add_statistics();
-		statistics->set_category(category);
-		statistics->set_key(item.first);
-		statistics->set_value(item.second);
+		if (category == PbStatisticsCategory::NONE || category == statistics_category) {
+			auto statistics = statistics_info.add_statistics();
+			statistics->set_category(category);
+			statistics->set_key(item.first);
+			statistics->set_value(item.second);
+		}
 	}
 }
 
