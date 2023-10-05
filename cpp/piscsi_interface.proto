@@ -323,6 +323,8 @@ enum PbStatisticsCategory {
 message PbStatistics {
     PbStatisticsCategory category = 1;
     // A symbolic unique item name, may be used for I18N. Possible values:
+    //  "cache_miss_read_count"
+    //  "cache_miss_write_count"
     //  "sector_read_count"
     //  "sector_write_count"
     string key = 2;
