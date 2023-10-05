@@ -506,7 +506,7 @@ int Disk::Read(span<uint8_t> buf, uint64_t block)
 		throw scsi_exception(sense_key::medium_error, asc::read_fault);
 	}
 
-	++read_count;
+	++sector_read_count;
 
 	return GetSectorSizeInBytes();
 }
@@ -521,7 +521,7 @@ void Disk::Write(span<const uint8_t> buf, uint64_t block)
 		throw scsi_exception(sense_key::medium_error, asc::write_fault);
 	}
 
-	++write_count;
+	++sector_write_count;
 }
 
 void Disk::Seek()
@@ -720,8 +720,8 @@ statistics_map Disk::GetStatistics()
 {
 	statistics_map statistics;
 
-	statistics.emplace(PbStatisticsCategory::INFO, make_pair("read_count", read_count));
-	statistics.emplace(PbStatisticsCategory::INFO, make_pair("write_count", write_count));
+	statistics.emplace(PbStatisticsCategory::INFO, make_pair("sector_read_count", sector_read_count));
+	statistics.emplace(PbStatisticsCategory::INFO, make_pair("sector_write_count", sector_write_count));
 
 	return statistics;
 }

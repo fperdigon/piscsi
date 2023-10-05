@@ -48,8 +48,8 @@ class Disk : public StorageDevice, private ScsiBlockCommands
 
 	// The statistics
 	// TODO Create a statistics struct
-	inline static int32_t read_count = 0;
-	inline static int32_t write_count = 0;
+	inline static uint32_t sector_read_count = 0;
+	inline static uint32_t sector_write_count = 0;
 
 public:
 

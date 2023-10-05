@@ -324,7 +324,7 @@ message PbStatistics {
     PbStatisticsCategory category = 1;
     // A symbolic unique item name
     string key = 2;
-    int32 value = 3;
+    uint32 value = 3;
 }
 
 // The information on collected statistics
