@@ -409,17 +409,8 @@ bool Piscsi::ExecuteCommand(CommandContext& context)
 			break;
 
 		case STATISTICS_INFO:
-			{
-				string c = GetParam(command, "category");
-				ranges::transform(c, back_inserter(c), ::toupper);
-				PbStatisticsCategory category = PbStatisticsCategory::NONE;
-				if (!c.empty()) {
-					// Unknown categories are ignored for forward compatibility
-					PbStatisticsCategory_Parse(c, &category);
-				}
-				response.GetStatisticsInfo(*result.mutable_statistics_info(), category);
-				context.WriteSuccessResult(result);
-			}
+			response.GetStatisticsInfo(*result.mutable_statistics_info());
+			context.WriteSuccessResult(result);
 			break;
 
 		case OPERATION_INFO:

@@ -192,10 +192,6 @@ enum PbOperation {
     OPERATION_INFO = 31;
 
     // Get statistics (PbStatisticsInfo)
-    // Parameters:
-    //   "category": optional statistics category to return, one of
-    //     "info"
-    //     "error"
     STATISTICS_INFO = 32;
 }
 
