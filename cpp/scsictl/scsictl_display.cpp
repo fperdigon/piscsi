@@ -237,12 +237,8 @@ string ScsictlDisplay::DisplayStatisticsInfo(const PbStatisticsInfo& statistics_
 
 	s << "Statistics:\n";
 
-	vector<PbStatistics> sorted_statistics;
-	for (const auto& statistics : statistics_info.statistics()) {
-		sorted_statistics.push_back(statistics);
-	}
-
 	// Sort by descending category and ascending key
+	vector<PbStatistics> sorted_statistics = { statistics_info.statistics().begin(), statistics_info.statistics().end() };
 	ranges::sort(sorted_statistics, [] (const PbStatistics& a, const PbStatistics& b)
 			{ return a.category() > b.category() || a.key() < b.key(); } );
 
