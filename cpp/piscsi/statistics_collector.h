@@ -13,8 +13,9 @@
 
 class StatisticsCollector
 {
+	friend class PiscsiResponse;
 
-public:
+private:
 
 	StatisticsCollector() = default;
 	~StatisticsCollector() = default;
