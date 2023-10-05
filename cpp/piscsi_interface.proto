@@ -315,7 +315,7 @@ message PbNetworkInterfacesInfo {
 }
 
 enum PbStatisticsCategory {
-    NONE = 0;
+    NO_CATEGORY = 0;
     INFO = 1;
     ERROR = 2;
 }
