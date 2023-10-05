@@ -48,7 +48,7 @@ private:
 
 	const DeviceFactory device_factory;
 
-	const StatisticsCollector collector;
+	[[no_unique_address]] const StatisticsCollector collector;
 
 	void GetDeviceProperties(const Device&, PbDeviceProperties&) const;
 	void GetDevice(const Device&, PbDevice&, const string&) const;
