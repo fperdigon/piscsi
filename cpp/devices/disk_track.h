@@ -15,6 +15,7 @@
 
 #pragma once
 
+#include "generated/piscsi_interface.pb.h"
 #include <cstdlib>
 #include <cstdint>
 #include <span>
@@ -22,6 +23,9 @@
 #include <string>
 
 using namespace std;
+using namespace piscsi_interface;
+
+using statistics_map = unordered_multimap<PbStatisticsCategory, pair<string, uint32_t>>;
 
 class DiskTrack
 {
@@ -37,6 +41,9 @@ class DiskTrack
 		bool raw;							// RAW mode flag
 		off_t imgoffset;					// Offset to actual data
 	} dt = {};
+
+	inline static uint32_t cache_miss_read_count = 0;
+	inline static uint32_t cache_miss_write_count = 0;
 
 public:
 
@@ -58,4 +65,6 @@ private:
 	bool WriteSector(span<const uint8_t> buf, int);			// Sector Write
 
 	int GetTrack() const		{ return dt.track; }		// Get track
+
+	static statistics_map GetStatistics();
 };

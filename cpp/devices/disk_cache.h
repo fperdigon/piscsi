@@ -45,6 +45,8 @@ public:
 	bool ReadSector(span<uint8_t>, uint32_t);			// Sector Read
 	bool WriteSector(span<const uint8_t>, uint32_t);	// Sector Write
 
+	static statistics_map GetStatistics() { return DiskTrack::GetStatistics(); }
+
 private:
 
 	// Internal Management

@@ -237,9 +237,13 @@ string ScsictlDisplay::DisplayStatisticsInfo(const PbStatisticsInfo& statistics_
 
 	s << "Statistics:\n";
 
-	// TODO Sort
+	map<string, PbStatistics> sorted_statistics;
 	for (const auto& statistics : statistics_info.statistics()) {
-		s << "  " << statistics.key() << ": " << statistics.value() << " (" << PbStatisticsCategory_Name(statistics.category()) << ")\n";
+		sorted_statistics[statistics.key()] = statistics;
+	}
+
+	for (const auto& [key, statistics] : sorted_statistics) {
+		s << "  " << key << ": " << statistics.value() << " (" << PbStatisticsCategory_Name(statistics.category()) << ")\n";
 	}
 
 	return s.str();

@@ -723,5 +723,7 @@ statistics_map Disk::GetStatistics()
 	statistics.emplace(PbStatisticsCategory::INFO, make_pair("sector_read_count", sector_read_count));
 	statistics.emplace(PbStatisticsCategory::INFO, make_pair("sector_write_count", sector_write_count));
 
+	statistics.merge(DiskCache::GetStatistics());
+
 	return statistics;
 }

@@ -21,7 +21,6 @@
 #include "disk_cache.h"
 #include "interfaces/scsi_block_commands.h"
 #include "storage_device.h"
-#include "generated/piscsi_interface.pb.h"
 #include <string>
 #include <span>
 #include <unordered_set>
@@ -29,8 +28,6 @@
 #include <tuple>
 
 using namespace std;
-
-using statistics_map = unordered_multimap<PbStatisticsCategory, pair<string, int32_t>>;
 
 class Disk : public StorageDevice, private ScsiBlockCommands
 {
@@ -45,7 +42,6 @@ class Disk : public StorageDevice, private ScsiBlockCommands
 	// Sector size shift count (9=512, 10=1024, 11=2048, 12=4096)
 	uint32_t size_shift_count = 0;
 
-	// The statistics
 	// TODO Create a statistics struct
 	inline static uint32_t sector_read_count = 0;
 	inline static uint32_t sector_write_count = 0;
