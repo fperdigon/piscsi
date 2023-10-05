@@ -45,6 +45,9 @@ class Disk : public StorageDevice, private ScsiBlockCommands
 	inline static uint32_t sector_read_count = 0;
 	inline static uint32_t sector_write_count = 0;
 
+	inline static const string SECTOR_READ_COUNT = "sector_read_count";
+	inline static const string SECTOR_WRITE_COUNT = "sector_write_count";
+
 public:
 
 	using StorageDevice::StorageDevice;

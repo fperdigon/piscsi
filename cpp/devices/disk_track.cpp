@@ -280,8 +280,8 @@ statistics_map DiskTrack::GetStatistics()
 {
 	statistics_map statistics;
 
-	statistics.emplace(PbStatisticsCategory::INFO, make_pair("cache_miss_read_count", cache_miss_read_count));
-	statistics.emplace(PbStatisticsCategory::INFO, make_pair("cache_miss_write_count", cache_miss_write_count));
+	statistics.emplace(PbStatisticsCategory::INFO, make_pair(CACHE_MISS_READ_COUNT, cache_miss_read_count));
+	statistics.emplace(PbStatisticsCategory::INFO, make_pair(CACHE_MISS_WRITE_COUNT, cache_miss_write_count));
 
 	return statistics;
 }

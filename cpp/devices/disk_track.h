@@ -45,6 +45,9 @@ class DiskTrack
 	inline static uint32_t cache_miss_read_count = 0;
 	inline static uint32_t cache_miss_write_count = 0;
 
+	inline static const string CACHE_MISS_READ_COUNT = "cache_miss_read_count";
+	inline static const string CACHE_MISS_WRITE_COUNT = "cache_miss_write_count";
+
 public:
 
 	DiskTrack() = default;
