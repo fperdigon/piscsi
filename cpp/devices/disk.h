@@ -22,6 +22,7 @@
 #include "disk_cache.h"
 #include "interfaces/scsi_block_commands.h"
 #include "storage_device.h"
+#include "generated/piscsi_interface.pb.h"
 #include <string>
 #include <span>
 #include <unordered_set>
@@ -30,7 +31,7 @@
 
 using namespace std;
 
-using statistics_map = unordered_map<string, int32_t, piscsi_util::StringHash, equal_to<>>;
+using statistics_map = unordered_multimap<PbStatisticsCategory, pair<string, int32_t>>;
 
 class Disk : public StorageDevice, private ScsiBlockCommands
 {

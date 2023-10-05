@@ -275,12 +275,11 @@ void PiscsiResponse::GetMappingInfo(PbMappingInfo& mapping_info) const
 
 void PiscsiResponse::GetStatisticsInfo(PbStatisticsInfo& statistics_info) const
 {
-	for (const auto& [key, value] : Disk::GetStatistics()) {
+	for (const auto& [category, item] : Disk::GetStatistics()) {
 		auto statistics = statistics_info.add_statistics();
-		// TODO Disk class must also provide category for each piece of data
-		statistics->set_category(PbStatisticsCategory::INFO);
-		statistics->set_key(key);
-		statistics->set_value(value);
+		statistics->set_category(category);
+		statistics->set_key(item.first);
+		statistics->set_value(item.second);
 	}
 }
 

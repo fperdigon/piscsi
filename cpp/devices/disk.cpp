@@ -720,8 +720,8 @@ statistics_map Disk::GetStatistics()
 {
 	statistics_map statistics;
 
-	statistics["read_count"] = read_count;
-	statistics["write_count"] = write_count;
+	statistics.emplace(PbStatisticsCategory::INFO, make_pair("read_count", read_count));
+	statistics.emplace(PbStatisticsCategory::INFO, make_pair("write_count", write_count));
 
 	return statistics;
 }

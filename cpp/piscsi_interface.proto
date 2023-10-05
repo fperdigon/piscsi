@@ -322,7 +322,7 @@ enum PbStatisticsCategory {
 
 message PbStatistics {
     PbStatisticsCategory category = 1;
-    // A symbolic unique name, not meant to be displayed in a UI
+    // A symbolic unique item name
     string key = 2;
     int32 value = 3;
 }
