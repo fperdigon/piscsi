@@ -8,7 +8,6 @@
 //	XM6i
 //	Copyright (C) 2010-2015 isaki@NetBSD.org
 //
-//  	Imported sava's Anex86/T98Next image and MO format support patch.
 //  	Comments translated to english by akuker.
 //
 //---------------------------------------------------------------------------
