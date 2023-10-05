@@ -242,8 +242,14 @@ string ScsictlDisplay::DisplayStatisticsInfo(const PbStatisticsInfo& statistics_
 		sorted_statistics.emplace(PbStatisticsCategory_Name(statistics.category()), statistics);
 	}
 
+	string prev_category;
 	for (const auto& [category, statistics] : sorted_statistics) {
-		s << "  " << category << "  " << statistics.key() << ": " << statistics.value() << '\n';
+		if (category != prev_category) {
+			s << "  " << category << '\n';
+			prev_category = category;
+		}
+
+		s << "    " << statistics.key() << ": " << statistics.value() << '\n';
 	}
 
 	return s.str();
