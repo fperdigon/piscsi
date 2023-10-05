@@ -237,24 +237,23 @@ string ScsictlDisplay::DisplayStatisticsInfo(const PbStatisticsInfo& statistics_
 
 	s << "Statistics:\n";
 
-	multimap<string, map<string, PbStatistics, less<>>, less<>> sorted_categories;
+	multimap<PbStatisticsCategory, map<string, PbStatistics, less<>>, greater<>> sorted_categories;
 	for (const auto& statistics : statistics_info.statistics()) {
-		const string category_name = PbStatisticsCategory_Name(statistics.category());
 
-		if (!sorted_categories.contains(category_name)) {
+		if (!sorted_categories.contains(statistics.category())) {
 			map<string, PbStatistics, less<>> sorted_statistics;
-			sorted_categories.emplace(category_name, sorted_statistics);
+			sorted_categories.emplace(statistics.category(), sorted_statistics);
 		}
 
-		const auto& sorted_statistics = sorted_categories.find(category_name);
+		const auto& sorted_statistics = sorted_categories.find(statistics.category());
 		assert(sorted_statistics != sorted_categories.end());
 		sorted_statistics->second[statistics.key()] = statistics;
 	}
 
-	string prev_category;
+	PbStatisticsCategory prev_category;
 	for (const auto& [category, sorted_statistics] : sorted_categories) {
 		if (category != prev_category) {
-			s << "  " << category << '\n';
+			s << "  " << PbStatisticsCategory_Name(category) << '\n';
 			prev_category = category;
 		}
 

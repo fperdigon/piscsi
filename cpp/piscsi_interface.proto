@@ -314,6 +314,7 @@ message PbNetworkInterfacesInfo {
     repeated string name = 1;
 }
 
+// Statistics categories ordered by increasing severity
 enum PbStatisticsCategory {
     NO_CATEGORY = 0;
     INFO = 1;
