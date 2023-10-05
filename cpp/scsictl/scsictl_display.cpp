@@ -242,7 +242,7 @@ string ScsictlDisplay::DisplayStatisticsInfo(const PbStatisticsInfo& statistics_
 	ranges::sort(sorted_statistics, [] (const PbStatistics& a, const PbStatistics& b)
 			{ return a.category() > b.category() || a.key() < b.key(); } );
 
-	PbStatisticsCategory prev_category;
+	PbStatisticsCategory prev_category = PbStatisticsCategory::NO_CATEGORY;
 	for (const auto& statistics : sorted_statistics) {
 		if (statistics.category() != prev_category) {
 			s << "  " << PbStatisticsCategory_Name(statistics.category()) << '\n';
