@@ -247,17 +247,18 @@ string ScsictlDisplay::DisplayStatisticsInfo(const PbStatisticsInfo& statistics_
 		}
 
 		auto sorted_statistics = sorted_categories.find(category_name);
+		assert(sorted_statistics != sorted_categories.end());
 		sorted_statistics->second[statistics.key()] = statistics;
 	}
 
 	string prev_category;
-	for (const auto& [category, statistics] : sorted_categories) {
+	for (const auto& [category, sorted_statistics] : sorted_categories) {
 		if (category != prev_category) {
 			s << "  " << category << '\n';
 			prev_category = category;
 		}
 
-		for (const auto& [key, statistics] : statistics) {
+		for (const auto& [key, statistics] : sorted_statistics) {
 			s << "    " << key << ": " << statistics.value() << '\n';
 		}
 	}
