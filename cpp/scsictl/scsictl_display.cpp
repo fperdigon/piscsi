@@ -237,13 +237,13 @@ string ScsictlDisplay::DisplayStatisticsInfo(const PbStatisticsInfo& statistics_
 
 	s << "Statistics:\n";
 
-	map<string, PbStatistics, less<>> sorted_statistics;
+	multimap<string, PbStatistics, less<>> sorted_statistics;
 	for (const auto& statistics : statistics_info.statistics()) {
-		sorted_statistics[statistics.key()] = statistics;
+		sorted_statistics.emplace(PbStatisticsCategory_Name(statistics.category()), statistics);
 	}
 
-	for (const auto& [key, statistics] : sorted_statistics) {
-		s << "  " << key << ": " << statistics.value() << " (" << PbStatisticsCategory_Name(statistics.category()) << ")\n";
+	for (const auto& [category, statistics] : sorted_statistics) {
+		s << "  " << category << "  " << statistics.key() << ": " << statistics.value() << '\n';
 	}
 
 	return s.str();

@@ -318,7 +318,7 @@ enum PbStatisticsCategory {
     NO_CATEGORY = 0;
     INFO = 1;
     ERROR = 2;
-}
+ }
 
 message PbStatistics {
     PbStatisticsCategory category = 1;
