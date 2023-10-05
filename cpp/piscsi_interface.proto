@@ -317,7 +317,8 @@ message PbNetworkInterfacesInfo {
 enum PbStatisticsCategory {
     NO_CATEGORY = 0;
     INFO = 1;
-    ERROR = 2;
+    WARNING = 2;
+    ERROR = 3;
  }
 
 message PbStatistics {
