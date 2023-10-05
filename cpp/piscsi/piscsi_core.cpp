@@ -410,7 +410,8 @@ bool Piscsi::ExecuteCommand(CommandContext& context)
 
 		case STATISTICS_INFO:
 			{
-				const string c = GetParam(command, "category");
+				string c = GetParam(command, "category");
+				ranges::transform(c, back_inserter(c), ::toupper);
 				PbStatisticsCategory category = PbStatisticsCategory::NONE;
 				if (!c.empty()) {
 					// Unknown categories are ignored for forward compatibility
