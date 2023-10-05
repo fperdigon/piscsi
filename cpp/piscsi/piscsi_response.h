@@ -38,6 +38,7 @@ public:
 	void GetNetworkInterfacesInfo(PbNetworkInterfacesInfo&) const;
 	void GetMappingInfo(PbMappingInfo&) const;
 	void GetLogLevelInfo(PbLogLevelInfo&) const;
+	void GetStatisticsInfo(PbStatisticsInfo&) const;
 	void GetOperationInfo(PbOperationInfo&, int) const;
 
 private:

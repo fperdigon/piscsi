@@ -16,6 +16,7 @@
 #pragma once
 
 #include "shared/scsi.h"
+#include "shared/piscsi_util.h"
 #include "device_factory.h"
 #include "disk_track.h"
 #include "disk_cache.h"
@@ -29,6 +30,8 @@
 
 using namespace std;
 
+using statistics_map = unordered_map<string, int32_t, piscsi_util::StringHash, equal_to<>>;
+
 class Disk : public StorageDevice, private ScsiBlockCommands
 {
 	enum access_mode { RW6, RW10, RW16, SEEK6, SEEK10 };
@@ -41,6 +44,11 @@ class Disk : public StorageDevice, private ScsiBlockCommands
 
 	// Sector size shift count (9=512, 10=1024, 11=2048, 12=4096)
 	uint32_t size_shift_count = 0;
+
+	// The statistics
+	// TODO Create a statistics struct
+	inline static int32_t read_count = 0;
+	inline static int32_t write_count = 0;
 
 public:
 
@@ -61,6 +69,8 @@ public:
 	bool IsSectorSizeConfigurable() const { return !sector_sizes.empty(); }
 	bool SetConfiguredSectorSize(const DeviceFactory&, uint32_t);
 	void FlushCache() override;
+
+	static statistics_map GetStatistics();
 
 private:
 

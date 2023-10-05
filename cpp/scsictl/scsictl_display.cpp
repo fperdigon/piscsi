@@ -231,6 +231,20 @@ string ScsictlDisplay::DisplayMappingInfo(const PbMappingInfo& mapping_info) con
 	return s.str();
 }
 
+string ScsictlDisplay::DisplayStatisticsInfo(const PbStatisticsInfo& statistics_info) const
+{
+	ostringstream s;
+
+	s << "Statistics:\n";
+
+	// TODO Sort
+	for (const auto& statistics : statistics_info.statistics()) {
+		s << "  " << statistics.key() << ": " << statistics.value() << " (" << PbStatisticsCategory_Name(statistics.category()) << ")\n";
+	}
+
+	return s.str();
+}
+
 string ScsictlDisplay::DisplayOperationInfo(const PbOperationInfo& operation_info) const
 {
 	ostringstream s;

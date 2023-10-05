@@ -81,6 +81,9 @@ bool ScsictlCommands::Execute(string_view log_level, string_view default_folder,
 		case MAPPING_INFO:
 			return CommandMappingInfo();
 
+		case STATISTICS_INFO:
+			return CommandStatisticsInfo();
+
 		case OPERATION_INFO:
 			return CommandOperationInfo();
 
@@ -252,6 +255,7 @@ bool ScsictlCommands::CommandServerInfo()
 	cout << scsictl_display.DisplayNetworkInterfaces(server_info.network_interfaces_info());
 	cout << scsictl_display.DisplayDeviceTypesInfo(server_info.device_types_info());
 	cout << scsictl_display.DisplayReservedIdsInfo(server_info.reserved_ids_info());
+	cout << scsictl_display.DisplayStatisticsInfo(server_info.statistics_info());
 	cout << scsictl_display.DisplayOperationInfo(server_info.operation_info());
 
 	if (server_info.devices_info().devices_size()) {
@@ -322,6 +326,15 @@ bool ScsictlCommands::CommandMappingInfo()
 	SendCommand();
 
 	cout << scsictl_display.DisplayMappingInfo(result.mapping_info()) << flush;
+
+	return true;
+}
+
+bool ScsictlCommands::CommandStatisticsInfo()
+{
+	SendCommand();
+
+	cout << scsictl_display.DisplayStatisticsInfo(result.statistics_info()) << flush;
 
 	return true;
 }

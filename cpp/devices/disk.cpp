@@ -506,6 +506,8 @@ int Disk::Read(span<uint8_t> buf, uint64_t block)
 		throw scsi_exception(sense_key::medium_error, asc::read_fault);
 	}
 
+	++read_count;
+
 	return GetSectorSizeInBytes();
 }
 
@@ -518,6 +520,8 @@ void Disk::Write(span<const uint8_t> buf, uint64_t block)
 	if (!cache->WriteSector(buf, static_cast<uint32_t>(block))) {
 		throw scsi_exception(sense_key::medium_error, asc::write_fault);
 	}
+
+	++write_count;
 }
 
 void Disk::Seek()
@@ -710,4 +714,14 @@ bool Disk::SetConfiguredSectorSize(const DeviceFactory& device_factory, uint32_t
     configured_sector_size = configured_size;
 
 	return true;
+}
+
+statistics_map Disk::GetStatistics()
+{
+	statistics_map statistics;
+
+	statistics["read_count"] = read_count;
+	statistics["write_count"] = write_count;
+
+	return statistics;
 }

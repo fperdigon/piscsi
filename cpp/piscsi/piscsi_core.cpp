@@ -408,6 +408,11 @@ bool Piscsi::ExecuteCommand(CommandContext& context)
 			context.WriteSuccessResult(result);
 			break;
 
+		case STATISTICS_INFO:
+			response.GetStatisticsInfo(*result.mutable_statistics_info());
+			context.WriteSuccessResult(result);
+			break;
+
 		case OPERATION_INFO:
 			response.GetOperationInfo(*result.mutable_operation_info(), piscsi_image.GetDepth());
 			context.WriteSuccessResult(result);

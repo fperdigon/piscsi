@@ -237,6 +237,7 @@ void PiscsiResponse::GetServerInfo(PbServerInfo& server_info, const unordered_se
 	GetAvailableImages(server_info, default_folder, folder_pattern, file_pattern, scan_depth);
 	GetNetworkInterfacesInfo(*server_info.mutable_network_interfaces_info());
 	GetMappingInfo(*server_info.mutable_mapping_info());
+	GetStatisticsInfo(*server_info.mutable_statistics_info());
 	GetDevices(devices, server_info, default_folder);
 	GetReservedIds(*server_info.mutable_reserved_ids_info(), reserved_ids);
 	GetOperationInfo(*server_info.mutable_operation_info(), scan_depth);
@@ -269,6 +270,17 @@ void PiscsiResponse::GetMappingInfo(PbMappingInfo& mapping_info) const
 {
 	for (const auto& [name, type] : device_factory.GetExtensionMapping()) {
 		(*mapping_info.mutable_mapping())[name] = type;
+	}
+}
+
+void PiscsiResponse::GetStatisticsInfo(PbStatisticsInfo& statistics_info) const
+{
+	for (const auto& [key, value] : Disk::GetStatistics()) {
+		auto statistics = statistics_info.add_statistics();
+		// TODO Disk class must also provide category for each piece of data
+		statistics->set_category(PbStatisticsCategory::INFO);
+		statistics->set_key(key);
+		statistics->set_value(value);
 	}
 }
 
@@ -323,6 +335,8 @@ void PiscsiResponse::GetOperationInfo(PbOperationInfo& operation_info, int depth
 	CreateOperation(operation_info, NETWORK_INTERFACES_INFO, "Get the available network interfaces");
 
 	CreateOperation(operation_info, MAPPING_INFO, "Get mapping of extensions to device types");
+
+	CreateOperation(operation_info, STATISTICS_INFO, "Get statistics");
 
 	CreateOperation(operation_info, RESERVED_IDS_INFO, "Get list of reserved device IDs");
 
