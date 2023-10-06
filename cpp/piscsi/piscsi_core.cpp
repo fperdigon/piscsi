@@ -357,9 +357,8 @@ bool Piscsi::ExecuteCommand(CommandContext& context)
 			break;
 
 		case SERVER_INFO:
-			response.GetServerInfo(*result.mutable_server_info(), controller_manager.GetAllDevices(),
-					executor->GetReservedIds(), piscsi_image.GetDefaultFolder(),
-					GetParam(command, "folder_pattern"), GetParam(command, "file_pattern"), piscsi_image.GetDepth());
+			response.GetServerInfo(*result.mutable_server_info(), command, controller_manager.GetAllDevices(),
+					executor->GetReservedIds(), piscsi_image.GetDefaultFolder(), piscsi_image.GetDepth());
 			context.WriteSuccessResult(result);
 			break;
 

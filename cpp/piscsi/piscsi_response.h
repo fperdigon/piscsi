@@ -13,6 +13,7 @@
 #include "devices/primary_device.h"
 #include "piscsi/statistics_collector.h"
 #include "generated/piscsi_interface.pb.h"
+#include <unordered_set>
 #include <string>
 #include <span>
 
@@ -34,8 +35,8 @@ public:
 	void GetDevicesInfo(const unordered_set<shared_ptr<PrimaryDevice>>&, PbResult&, const PbCommand&, const string&) const;
 	void GetDeviceTypesInfo(PbDeviceTypesInfo&) const;
 	void GetVersionInfo(PbVersionInfo&) const;
-	void GetServerInfo(PbServerInfo&, const unordered_set<shared_ptr<PrimaryDevice>>&, const unordered_set<int>&,
-			const string&, const string&, const string&, int) const;
+	void GetServerInfo(PbServerInfo&, const PbCommand&, const unordered_set<shared_ptr<PrimaryDevice>>&,
+			const unordered_set<int>&, const string&, int) const;
 	void GetNetworkInterfacesInfo(PbNetworkInterfacesInfo&) const;
 	void GetMappingInfo(PbMappingInfo&) const;
 	void GetLogLevelInfo(PbLogLevelInfo&) const;
@@ -63,4 +64,6 @@ private:
 	static bool ValidateImageFile(const path&);
 
 	static bool FilterMatches(const string&, string_view);
+
+	static bool HasOperation(const unordered_set<string>&, PbOperation);
 };

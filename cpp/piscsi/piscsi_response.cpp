@@ -227,20 +227,59 @@ void PiscsiResponse::GetDevicesInfo(const unordered_set<shared_ptr<PrimaryDevice
 	result.set_status(true);
 }
 
-void PiscsiResponse::GetServerInfo(PbServerInfo& server_info, const unordered_set<shared_ptr<PrimaryDevice>>& devices,
-		const unordered_set<int>& reserved_ids, const string& default_folder, const string& folder_pattern,
-		const string& file_pattern, int scan_depth) const
+void PiscsiResponse::GetServerInfo(PbServerInfo& server_info, const PbCommand& command,
+		const unordered_set<shared_ptr<PrimaryDevice>>& devices, const unordered_set<int>& reserved_ids,
+		const string& default_folder, int scan_depth) const
 {
-	GetVersionInfo(*server_info.mutable_version_info());
-	GetLogLevelInfo(*server_info.mutable_log_level_info());
-	GetDeviceTypesInfo(*server_info.mutable_device_types_info());
-	GetAvailableImages(server_info, default_folder, folder_pattern, file_pattern, scan_depth);
-	GetNetworkInterfacesInfo(*server_info.mutable_network_interfaces_info());
-	GetMappingInfo(*server_info.mutable_mapping_info());
-	GetStatisticsInfo(*server_info.mutable_statistics_info());
-	GetDevices(devices, server_info, default_folder);
-	GetReservedIds(*server_info.mutable_reserved_ids_info(), reserved_ids);
-	GetOperationInfo(*server_info.mutable_operation_info(), scan_depth);
+	const vector<string> command_operations = Split(GetParam(command, "operations"), ',');
+	unordered_set<string> operations;
+	for (const string& operation : command_operations) {
+		string op;
+		ranges::transform(operation, back_inserter(op), ::toupper);
+		cerr << op << endl;
+		operations.insert(op);
+	}
+
+	if (HasOperation(operations, PbOperation::VERSION_INFO)) {
+		GetVersionInfo(*server_info.mutable_version_info());
+	}
+
+	if (HasOperation(operations, PbOperation::LOG_LEVEL_INFO)) {
+		GetLogLevelInfo(*server_info.mutable_log_level_info());
+	}
+
+	if (HasOperation(operations, PbOperation::DEVICE_TYPES_INFO)) {
+		GetDeviceTypesInfo(*server_info.mutable_device_types_info());
+	}
+
+	if (HasOperation(operations, PbOperation::IMAGE_FILE_INFO)) {
+		GetAvailableImages(server_info, default_folder, GetParam(command, "folder_pattern"),
+				GetParam(command, "file_pattern"), scan_depth);
+	}
+
+	if (HasOperation(operations, PbOperation::NETWORK_INTERFACES_INFO)) {
+		GetNetworkInterfacesInfo(*server_info.mutable_network_interfaces_info());
+	}
+
+	if (HasOperation(operations, PbOperation::MAPPING_INFO)) {
+		GetMappingInfo(*server_info.mutable_mapping_info());
+	}
+
+	if (HasOperation(operations, PbOperation::STATISTICS_INFO)) {
+		GetStatisticsInfo(*server_info.mutable_statistics_info());
+	}
+
+	if (HasOperation(operations, PbOperation::DEVICES_INFO)) {
+		GetDevices(devices, server_info, default_folder);
+	}
+
+	if (HasOperation(operations, PbOperation::RESERVED_IDS_INFO)) {
+		GetReservedIds(*server_info.mutable_reserved_ids_info(), reserved_ids);
+	}
+
+	if (HasOperation(operations, PbOperation::OPERATION_INFO)) {
+		GetOperationInfo(*server_info.mutable_operation_info(), scan_depth);
+	}
 }
 
 void PiscsiResponse::GetVersionInfo(PbVersionInfo& version_info) const
@@ -481,4 +520,9 @@ bool PiscsiResponse::FilterMatches(const string& input, string_view pattern_lowe
 	}
 
 	return true;
+}
+
+bool PiscsiResponse::HasOperation(const unordered_set<string>& operations, PbOperation operation)
+{
+	return operations.empty() || operations.find(PbOperation_Name(operation)) != operations.end();
 }
