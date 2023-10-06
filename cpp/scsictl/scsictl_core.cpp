@@ -130,7 +130,7 @@ int ScsiCtl::run(const vector<char *>& args) const
 			case 'e':
 				command.set_operation(DEFAULT_IMAGE_FILES_INFO);
                 if (optarg) {
-                	SetPatternParams(command, optarg);
+                	SetCommandParams(command, optarg);
                 }
                 break;
 
@@ -208,7 +208,7 @@ int ScsiCtl::run(const vector<char *>& args) const
 			case 's':
 				command.set_operation(SERVER_INFO);
                 if (optarg) {
-                	SetPatternParams(command, optarg);
+                	SetCommandParams(command, optarg);
                 }
                 break;
 

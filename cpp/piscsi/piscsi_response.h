@@ -11,6 +11,7 @@
 
 #include "devices/device_factory.h"
 #include "devices/primary_device.h"
+#include "shared/piscsi_util.h"
 #include "piscsi/statistics_collector.h"
 #include "generated/piscsi_interface.pb.h"
 #include <unordered_set>
@@ -65,5 +66,5 @@ private:
 
 	static bool FilterMatches(const string&, string_view);
 
-	static bool HasOperation(const unordered_set<string>&, PbOperation);
+	static bool HasOperation(const unordered_set<string, piscsi_util::StringHash, equal_to<>>&, PbOperation);
 };

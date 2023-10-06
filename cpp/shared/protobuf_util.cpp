@@ -42,21 +42,34 @@ void protobuf_util::ParseParameters(PbDeviceDefinition& device, const string& pa
 	}
 }
 
-void protobuf_util::SetPatternParams(PbCommand& command, const string& patterns)
+void protobuf_util::SetCommandParams(PbCommand& command, const string& params)
 {
 	string folder_pattern;
 	string file_pattern;
+	string operations;
 
-	if (const auto& components = Split(patterns, ':', 2); components.size() == 2) {
-		folder_pattern = components[0];
-		file_pattern = components[1];
-	}
-	else {
-		file_pattern = patterns;
+	const auto& components = Split(params, ':', 3);
+	switch (components.size()) {
+		case 3:
+			operations = components[2];
+			[[fallthrough]];
+
+		case 2:
+			folder_pattern = components[0];
+			file_pattern = components[1];
+			break;
+
+		case 1:
+			file_pattern = components[0];
+			break;
+
+		default:
+			break;
 	}
 
 	SetParam(command, "folder_pattern", folder_pattern);
 	SetParam(command, "file_pattern", file_pattern);
+	SetParam(command, "operations", operations);
 }
 
 void protobuf_util::SetProductData(PbDeviceDefinition& device, const string& data)
