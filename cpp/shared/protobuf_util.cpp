@@ -48,8 +48,7 @@ void protobuf_util::SetCommandParams(PbCommand& command, const string& params)
 	string file_pattern;
 	string operations;
 
-	const auto& components = Split(params, ':', 3);
-	switch (components.size()) {
+	switch (const auto& components = Split(params, ':', 3); components.size()) {
 		case 3:
 			operations = components[2];
 			[[fallthrough]];
