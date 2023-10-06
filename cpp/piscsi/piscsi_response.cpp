@@ -236,7 +236,6 @@ void PiscsiResponse::GetServerInfo(PbServerInfo& server_info, const PbCommand& c
 	for (const string& operation : command_operations) {
 		string op;
 		ranges::transform(operation, back_inserter(op), ::toupper);
-		cerr << op << endl;
 		operations.insert(op);
 	}
 
