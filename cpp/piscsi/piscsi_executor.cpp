@@ -308,7 +308,6 @@ bool PiscsiExecutor::Insert(const CommandContext& context, const PbDeviceDefinit
 	spdlog::info("Insert " + string(pb_device.protected_() ? "protected " : "") + "file '" + filename +
 			"' requested into " + device->GetIdentifier());
 
-	// TODO It may be better to add PrimaryDevice::Insert for all device-specific insert operations
 	auto storage_device = dynamic_pointer_cast<StorageDevice>(device);
 	if (!SetSectorSize(context, storage_device, pb_device.block_size())) {
 		return false;
