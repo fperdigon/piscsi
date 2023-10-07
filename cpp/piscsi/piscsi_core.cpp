@@ -442,12 +442,7 @@ bool Piscsi::ExecuteCommand(CommandContext& context)
 
 		// The remaining commands may only be executed when the target is idle
 		default:
-			{
-				scoped_lock<mutex> lock(execution_locker);
-				if (!executor->ProcessCmd(context)) {
-					return false;
-				}
-			}
+			ExecuteWithLock(context);
 
 			// ATTACH and DETACH return the resulting device list
 			if (command.operation() == ATTACH || command.operation() == DETACH) {
@@ -460,6 +455,12 @@ bool Piscsi::ExecuteCommand(CommandContext& context)
 	}
 
 	return true;
+}
+
+bool Piscsi::ExecuteWithLock(CommandContext& context)
+{
+	scoped_lock<mutex> lock(execution_locker);
+	return executor->ProcessCmd(context);
 }
 
 int Piscsi::run(span<char *> args)

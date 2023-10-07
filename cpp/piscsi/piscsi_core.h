@@ -52,6 +52,7 @@ private:
 	bool ShutDown(const CommandContext&, const string&);
 
 	bool ExecuteCommand(CommandContext&);
+	bool ExecuteWithLock(CommandContext&);
 
 	bool SetLogLevel(const string&) const;
 
