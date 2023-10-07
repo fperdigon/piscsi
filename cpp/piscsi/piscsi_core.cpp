@@ -423,8 +423,7 @@ bool Piscsi::ExecuteCommand(CommandContext& context)
 			return ShutDown(context, GetParam(command, "mode"));
 
 		case NO_OPERATION:
-			context.ReturnSuccessStatus();
-			break;
+			return context.ReturnSuccessStatus();
 
 		case CREATE_IMAGE:
 			return piscsi_image.CreateImage(context);
