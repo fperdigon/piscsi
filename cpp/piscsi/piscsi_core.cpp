@@ -85,6 +85,7 @@ void Piscsi::CleanUp()
 
 	executor->DetachAll();
 
+	assert(bus);
 	bus->Cleanup();
 }
 
