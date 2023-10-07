@@ -455,6 +455,7 @@ bool Piscsi::ExecuteCommand(CommandContext& context)
 				PbCommand cmd;
 				response.GetDevicesInfo(controller_manager.GetAllDevices(), result, cmd, context.GetDefaultFolder());
 				context.WriteResult(result);
+				return result.status();
 			}
 
 			return status;
