@@ -598,8 +598,7 @@ bool Piscsi::ShutDown(const CommandContext& context, const string& m) {
 	else if (m == "reboot") {
 		mode = AbstractController::piscsi_shutdown_mode::RESTART_PI;
 	}
-
-	if (mode == AbstractController::piscsi_shutdown_mode::NONE) {
+	else {
 		return context.ReturnLocalizedError(LocalizationKey::ERROR_SHUTDOWN_MODE_INVALID, m);
 	}
 
