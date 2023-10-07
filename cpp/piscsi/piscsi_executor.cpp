@@ -308,11 +308,11 @@ bool PiscsiExecutor::Insert(const CommandContext& context, const PbDeviceDefinit
 	spdlog::info("Insert " + string(pb_device.protected_() ? "protected " : "") + "file '" + filename +
 			"' requested into " + device->GetIdentifier());
 
-	auto storage_device = dynamic_pointer_cast<StorageDevice>(device);
-	if (!SetSectorSize(context, storage_device, pb_device.block_size())) {
+	if (!SetSectorSize(context, device, pb_device.block_size())) {
 		return false;
 	}
 
+	auto storage_device = dynamic_pointer_cast<StorageDevice>(device);
 	if (!ValidateImageFile(context, *storage_device, filename)) {
 		return false;
 	}
