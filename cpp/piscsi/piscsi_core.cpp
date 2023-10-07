@@ -449,7 +449,7 @@ bool Piscsi::ExecuteCommand(CommandContext& context)
 				status = executor->ProcessCmd(context);
 			}
 
-			// ATTACH and DETACH return the device list
+			// ATTACH and DETACH return the resulting device list
 			if (status && (command.operation() == ATTACH || command.operation() == DETACH)) {
 				// A new command with an empty device list is required here in order to return data for all devices
 				PbCommand cmd;
