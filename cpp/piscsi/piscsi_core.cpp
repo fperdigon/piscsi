@@ -85,7 +85,7 @@ void Piscsi::CleanUp()
 
 	executor->DetachAll();
 
-	assert(bus);
+	// TODO Check why there are rare cases where bus is NULL
 	bus->Cleanup();
 }
 
