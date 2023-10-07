@@ -442,23 +442,21 @@ bool Piscsi::ExecuteCommand(CommandContext& context)
 
 		// The remaining commands may only be executed when the target is idle
 		default:
-			bool status;
-
 			{
 				scoped_lock<mutex> lock(execution_locker);
-				status = executor->ProcessCmd(context);
+				if (!executor->ProcessCmd(context)) {
+					return false;
+				}
 			}
 
 			// ATTACH and DETACH return the resulting device list
-			if (status && (command.operation() == ATTACH || command.operation() == DETACH)) {
+			if (command.operation() == ATTACH || command.operation() == DETACH) {
 				// A new command with an empty device list is required here in order to return data for all devices
 				PbCommand cmd;
 				response.GetDevicesInfo(controller_manager.GetAllDevices(), result, cmd, context.GetDefaultFolder());
 				context.WriteResult(result);
 				return result.status();
 			}
-
-			return status;
 	}
 
 	return true;
