@@ -622,15 +622,15 @@ bool Piscsi::ShutDown(const CommandContext& context, const string& m) {
 // Shutdown on a SCSI command
 bool Piscsi::ShutDown(AbstractController::piscsi_shutdown_mode shutdown_mode)
 {
-	CleanUp();
-
 	switch(shutdown_mode) {
 	case AbstractController::piscsi_shutdown_mode::STOP_PISCSI:
 		spdlog::info("PiSCSI shutdown requested");
+		CleanUp();
 		return true;
 
 	case AbstractController::piscsi_shutdown_mode::STOP_PI:
 		spdlog::info("Raspberry Pi shutdown requested");
+		CleanUp();
 		if (system("init 0") == -1) {
 			spdlog::error("Raspberry Pi shutdown failed");
 		}
@@ -638,6 +638,7 @@ bool Piscsi::ShutDown(AbstractController::piscsi_shutdown_mode shutdown_mode)
 
 	case AbstractController::piscsi_shutdown_mode::RESTART_PI:
 		spdlog::info("Raspberry Pi restart requested");
+		CleanUp();
 		if (system("init 6") == -1) {
 			spdlog::error("Raspberry Pi restart failed");
 		}
