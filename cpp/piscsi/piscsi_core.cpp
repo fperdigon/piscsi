@@ -440,7 +440,7 @@ bool Piscsi::ExecuteCommand(CommandContext& context)
 		case RESERVE_IDS:
 			return executor->ProcessCmd(context);
 
-		// The remaining commands can only be executed when the target is idle
+		// The remaining commands may only be executed when the target is idle
 		default:
 			bool status;
 
