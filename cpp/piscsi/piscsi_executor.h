@@ -41,7 +41,6 @@ public:
 	bool Insert(const CommandContext&, const PbDeviceDefinition&, const shared_ptr<PrimaryDevice>&, bool) const;
 	bool Detach(const CommandContext&, PrimaryDevice&, bool);
 	void DetachAll();
-	bool ShutDown(const CommandContext&, const string&);
 	string SetReservedIds(string_view);
 	bool ValidateImageFile(const CommandContext&, StorageDevice&, const string&) const;
 	string PrintCommand(const PbCommand&, const PbDeviceDefinition&) const;

@@ -373,55 +373,6 @@ void PiscsiExecutor::DetachAll()
 	spdlog::info("Detached all devices");
 }
 
-bool PiscsiExecutor::ShutDown(const CommandContext& context, const string& mode) {
-	if (mode.empty()) {
-		return context.ReturnLocalizedError(LocalizationKey::ERROR_SHUTDOWN_MODE_MISSING);
-	}
-
-	PbResult result;
-	result.set_status(true);
-
-	// The shutdown mode is "rascsi" instead of "piscsi" for backwards compatibility
-	if (mode == "rascsi") {
-		spdlog::info("PiSCSI shutdown requested");
-
-		return true;
-	}
-
-	if (mode != "system" && mode != "reboot") {
-		return context.ReturnLocalizedError(LocalizationKey::ERROR_SHUTDOWN_MODE_INVALID, mode);
-	}
-
-	// The root user has UID 0
-	if (getuid()) {
-		return context.ReturnLocalizedError(LocalizationKey::ERROR_SHUTDOWN_PERMISSION);
-	}
-
-	if (mode == "system") {
-		spdlog::info("System shutdown requested");
-
-		DetachAll();
-
-		context.WriteResult(result);
-
-		if (system("init 0") == -1) {
-			spdlog::error("System shutdown failed");
-		}
-	}
-	else if (mode == "reboot") {
-		spdlog::info("System reboot requested");
-
-		DetachAll();
-
-		context.WriteResult(result);
-
-		if (system("init 6") == -1) {
-			spdlog::error("System reboot failed");
-		}
-	}
-
-	return false;
-}
 
 string PiscsiExecutor::SetReservedIds(string_view ids)
 {

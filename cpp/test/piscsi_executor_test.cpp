@@ -352,23 +352,6 @@ TEST(PiscsiExecutorTest, DetachAll)
 	EXPECT_TRUE(controller_manager.GetAllDevices().empty());
 }
 
-TEST(PiscsiExecutorTest, ShutDown)
-{
-	auto bus = make_shared<MockBus>();
-	ControllerManager controller_manager;
-	PiscsiExecutor executor(*bus, controller_manager);
-
-	PbCommand command;
-	command.set_operation(SHUT_DOWN);
-	CommandContext context(command, "", "");
-	EXPECT_FALSE(executor.ShutDown(context, ""));
-	EXPECT_FALSE(executor.ShutDown(context, "xyz"));
-
-	EXPECT_FALSE(executor.ShutDown(context, "system")) << "Only available for the root user";
-	EXPECT_FALSE(executor.ShutDown(context, "reboot")) << "Only available for the root user";
-	EXPECT_TRUE(executor.ShutDown(context, "rascsi"));
-}
-
 TEST(PiscsiExecutorTest, SetReservedIds)
 {
 	DeviceFactory device_factory;

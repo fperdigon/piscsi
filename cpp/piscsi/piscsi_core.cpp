@@ -420,7 +420,7 @@ bool Piscsi::ExecuteCommand(CommandContext& context)
 			break;
 
 		case SHUT_DOWN:
-			if (executor->ShutDown(context, GetParam(command, "mode"))) {
+			if (ShutDown(context, GetParam(command, "mode"))) {
 				context.ReturnSuccessStatus();
 				CleanUp();
 			}
@@ -596,6 +596,58 @@ void Piscsi::Process()
 	}
 }
 
+// Shutdown on a remote interface command
+bool Piscsi::ShutDown(const CommandContext& context, const string& mode) {
+	if (mode.empty()) {
+		return context.ReturnLocalizedError(LocalizationKey::ERROR_SHUTDOWN_MODE_MISSING);
+	}
+
+	PbResult result;
+	result.set_status(true);
+
+	// The shutdown mode is "rascsi" instead of "piscsi" for backwards compatibility
+	if (mode == "rascsi") {
+		spdlog::info("PiSCSI shutdown requested");
+
+		return true;
+	}
+
+	if (mode != "system" && mode != "reboot") {
+		return context.ReturnLocalizedError(LocalizationKey::ERROR_SHUTDOWN_MODE_INVALID, mode);
+	}
+
+	// The root user has UID 0
+	if (getuid()) {
+		return context.ReturnLocalizedError(LocalizationKey::ERROR_SHUTDOWN_PERMISSION);
+	}
+
+	if (mode == "system") {
+		spdlog::info("System shutdown requested");
+
+		executor->DetachAll();
+
+		context.WriteResult(result);
+
+		if (system("init 0") == -1) {
+			spdlog::error("System shutdown failed");
+		}
+	}
+	else if (mode == "reboot") {
+		spdlog::info("System reboot requested");
+
+		executor->DetachAll();
+
+		context.WriteResult(result);
+
+		if (system("init 6") == -1) {
+			spdlog::error("System reboot failed");
+		}
+	}
+
+	return false;
+}
+
+// Shutdown on a SCSI command
 void Piscsi::ShutDown(AbstractController::piscsi_shutdown_mode shutdown_mode)
 {
 	CleanUp();
