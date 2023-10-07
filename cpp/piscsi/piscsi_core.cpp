@@ -612,9 +612,9 @@ bool Piscsi::ShutDown(const CommandContext& context, const string& m) {
 		return context.ReturnLocalizedError(LocalizationKey::ERROR_SHUTDOWN_PERMISSION);
 	}
 
+	// Report success now because after a shutdown nothing can be reported anymore
 	PbResult result;
-	result.set_status(true);
-	context.WriteResult(result);
+	context.WriteSuccessResult(result);
 
 	return ShutDown(mode);
 }
