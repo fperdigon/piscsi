@@ -318,22 +318,23 @@ bool Piscsi::ExecuteCommand(CommandContext& context)
 	context.SetDefaultFolder(piscsi_image.GetDefaultFolder());
 
 	const PbCommand& command = context.GetCommand();
+	const PbOperation operation = command.operation();
 
 	if (!access_token.empty() && access_token != GetParam(command, "token")) {
 		return context.ReturnLocalizedError(LocalizationKey::ERROR_AUTHENTICATION, UNAUTHORIZED);
 	}
 
-	if (!PbOperation_IsValid(command.operation())) {
-		spdlog::error("Received unknown command with operation opcode " + to_string(command.operation()));
+	if (!PbOperation_IsValid(operation)) {
+		spdlog::error("Received unknown command with operation opcode " + to_string(operation));
 
 		return context.ReturnLocalizedError(LocalizationKey::ERROR_OPERATION, UNKNOWN_OPERATION);
 	}
 
-	spdlog::trace("Received " + PbOperation_Name(command.operation()) + " command");
+	spdlog::trace("Received " + PbOperation_Name(operation) + " command");
 
 	PbResult result;
 
-	switch(command.operation()) {
+	switch(operation) {
 		case LOG_LEVEL:
 			if (const string log_level = GetParam(command, "level"); !SetLogLevel(log_level)) {
 				context.ReturnLocalizedError(LocalizationKey::ERROR_LOG_LEVEL, log_level);
@@ -446,7 +447,7 @@ bool Piscsi::ExecuteCommand(CommandContext& context)
 				return false;
 			}
 
-			return HandleDeviceListChange(context, command.operation());
+			return HandleDeviceListChange(context, operation);
 	}
 
 	return true;
