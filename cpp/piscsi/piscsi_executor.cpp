@@ -89,6 +89,7 @@ bool PiscsiExecutor::ProcessCmd(const CommandContext& context)
 {
 	const PbCommand& command = context.GetCommand();
 
+	// Handle commands that are not device-specific
 	switch (command.operation()) {
 		case DETACH_ALL:
 			DetachAll();
