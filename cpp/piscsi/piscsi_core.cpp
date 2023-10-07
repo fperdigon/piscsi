@@ -85,7 +85,8 @@ void Piscsi::CleanUp()
 
 	executor->DetachAll();
 
-	// TODO Check why there are rare cases where bus is NULL even though it is never set to NULL
+	// TODO Check why there are rare cases where bus is NULL on a remote interface shutdown
+	// even though it is never set to NULL anywhere
 	bus->Cleanup();
 }
 
