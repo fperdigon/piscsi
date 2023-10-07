@@ -110,11 +110,11 @@ bool PiscsiExecutor::ProcessCmd(const CommandContext& context)
 
 	// Remember the list of reserved files during the dry run
 	const auto& reserved_files = StorageDevice::GetReservedFiles();
-	const bool status = ranges::find_if_not(command.devices(), [&] (const auto& device)
+	const bool hasError = ranges::find_if_not(command.devices(), [&] (const auto& device)
 			{ return ProcessDeviceCmd(context, device, true); }) != command.devices().end();
 	StorageDevice::SetReservedFiles(reserved_files);
 
-	if (status) {
+	if (hasError) {
 		return false;
 	}
 
