@@ -593,17 +593,28 @@ void Piscsi::Process()
 }
 
 // Shutdown on a remote interface command
-bool Piscsi::ShutDown(const CommandContext& context, const string& mode) {
-	if (mode.empty()) {
+bool Piscsi::ShutDown(const CommandContext& context, const string& m) {
+	if (m.empty()) {
 		return context.ReturnLocalizedError(LocalizationKey::ERROR_SHUTDOWN_MODE_MISSING);
 	}
 
-	if (mode != "rascsi" && mode != "system" && mode != "reboot") {
-		return context.ReturnLocalizedError(LocalizationKey::ERROR_SHUTDOWN_MODE_INVALID, mode);
+	AbstractController::piscsi_shutdown_mode mode = AbstractController::piscsi_shutdown_mode::NONE;
+	if (m == "rascsi") {
+		mode = AbstractController::piscsi_shutdown_mode::STOP_PISCSI;
+	}
+	else if (m == "system") {
+		mode = AbstractController::piscsi_shutdown_mode::STOP_PI;
+	}
+	else if (m == "reboot") {
+		mode = AbstractController::piscsi_shutdown_mode::RESTART_PI;
+	}
+
+	if (mode == AbstractController::piscsi_shutdown_mode::NONE) {
+		return context.ReturnLocalizedError(LocalizationKey::ERROR_SHUTDOWN_MODE_INVALID, m);
 	}
 
 	// Shutdown modes other than rascsi require root permissions
-	if (mode != "rascsi" && getuid()) {
+	if (mode != AbstractController::piscsi_shutdown_mode::STOP_PISCSI && getuid()) {
 		return context.ReturnLocalizedError(LocalizationKey::ERROR_SHUTDOWN_PERMISSION);
 	}
 
@@ -611,42 +622,18 @@ bool Piscsi::ShutDown(const CommandContext& context, const string& mode) {
 	result.set_status(true);
 	context.WriteResult(result);
 
-	CleanUp();
-
-	// The shutdown mode is "rascsi" instead of "piscsi" for backwards compatibility
-	if (mode == "rascsi") {
-		spdlog::info("PiSCSI shutdown requested");
-
-		return true;
-	}
-
-	if (mode == "system") {
-		spdlog::info("System shutdown requested");
-
-		if (system("init 0") == -1) {
-			spdlog::error("System shutdown failed");
-		}
-	}
-	else if (mode == "reboot") {
-		spdlog::info("System reboot requested");
-
-		if (system("init 6") == -1) {
-			spdlog::error("System reboot failed");
-		}
-	}
-
-	return false;
+	return ShutDown(mode);
 }
 
 // Shutdown on a SCSI command
-void Piscsi::ShutDown(AbstractController::piscsi_shutdown_mode shutdown_mode)
+bool Piscsi::ShutDown(AbstractController::piscsi_shutdown_mode shutdown_mode)
 {
 	CleanUp();
 
 	switch(shutdown_mode) {
 	case AbstractController::piscsi_shutdown_mode::STOP_PISCSI:
 		spdlog::info("PiSCSI shutdown requested");
-		break;
+		return true;
 
 	case AbstractController::piscsi_shutdown_mode::STOP_PI:
 		spdlog::info("Raspberry Pi shutdown requested");
@@ -666,6 +653,8 @@ void Piscsi::ShutDown(AbstractController::piscsi_shutdown_mode shutdown_mode)
 		assert(false);
 		break;
 	}
+
+	return false;
 }
 
 bool Piscsi::IsNotBusy() const

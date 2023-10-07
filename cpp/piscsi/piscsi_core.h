@@ -48,7 +48,7 @@ private:
 	void Process();
 	bool IsNotBusy() const;
 
-	void ShutDown(AbstractController::piscsi_shutdown_mode);
+	bool ShutDown(AbstractController::piscsi_shutdown_mode);
 	bool ShutDown(const CommandContext&, const string&);
 
 	bool ExecuteCommand(CommandContext&);
