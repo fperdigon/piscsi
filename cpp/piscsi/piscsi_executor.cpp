@@ -96,8 +96,7 @@ bool PiscsiExecutor::ProcessCmd(const CommandContext& context)
 			return context.ReturnSuccessStatus();
 
 		case RESERVE_IDS: {
-			const string ids = GetParam(command, "ids");
-			if (const string error = SetReservedIds(ids); !error.empty()) {
+			if (const string error = SetReservedIds(GetParam(command, "ids")); !error.empty()) {
 				return context.ReturnErrorStatus(error);
 			}
 
