@@ -442,7 +442,9 @@ bool Piscsi::ExecuteCommand(CommandContext& context)
 
 		default:
 			// The remaining commands may only be executed when the target is idle
-			ExecuteWithLock(context);
+			if (!ExecuteWithLock(context)) {
+				return false;
+			}
 
 			// ATTACH and DETACH return the resulting device list
 			if (command.operation() == ATTACH || command.operation() == DETACH) {
