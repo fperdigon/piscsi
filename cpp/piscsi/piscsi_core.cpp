@@ -440,8 +440,8 @@ bool Piscsi::ExecuteCommand(CommandContext& context)
 		case RESERVE_IDS:
 			return executor->ProcessCmd(context);
 
-		// The remaining commands may only be executed when the target is idle
 		default:
+			// The remaining commands may only be executed when the target is idle
 			ExecuteWithLock(context);
 
 			// ATTACH and DETACH return the resulting device list
