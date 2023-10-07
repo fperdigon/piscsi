@@ -313,10 +313,8 @@ bool Piscsi::SetLogLevel(const string& log_level) const
 	return true;
 }
 
-bool Piscsi::ExecuteCommand(CommandContext& context)
+bool Piscsi::ExecuteCommand(const CommandContext& context)
 {
-	context.SetDefaultFolder(piscsi_image.GetDefaultFolder());
-
 	const PbCommand& command = context.GetCommand();
 	const PbOperation operation = command.operation();
 
@@ -453,7 +451,7 @@ bool Piscsi::ExecuteCommand(CommandContext& context)
 	return true;
 }
 
-bool Piscsi::ExecuteWithLock(CommandContext& context)
+bool Piscsi::ExecuteWithLock(const CommandContext& context)
 {
 	scoped_lock<mutex> lock(execution_locker);
 	return executor->ProcessCmd(context);
@@ -505,7 +503,10 @@ int Piscsi::run(span<char *> args)
 		return EXIT_FAILURE;
 	}
 
-	if (const string error = service.Init([this] (CommandContext& context) { return ExecuteCommand(context); }, port);
+	if (const string error = service.Init([this] (CommandContext& context) {
+			context.SetDefaultFolder(piscsi_image.GetDefaultFolder());
+			return ExecuteCommand(context);
+		}, port);
 		!error.empty()) {
 		cerr << "Error: " << error << endl;
 

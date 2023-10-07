@@ -51,8 +51,8 @@ private:
 	bool ShutDown(AbstractController::piscsi_shutdown_mode);
 	bool ShutDown(const CommandContext&, const string&);
 
-	bool ExecuteCommand(CommandContext&);
-	bool ExecuteWithLock(CommandContext&);
+	bool ExecuteCommand(const CommandContext&);
+	bool ExecuteWithLock(const CommandContext&);
 	bool HandleDeviceListChange(const CommandContext&, PbOperation) const;
 
 	bool SetLogLevel(const string&) const;
