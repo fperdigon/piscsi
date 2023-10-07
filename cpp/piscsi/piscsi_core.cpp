@@ -450,7 +450,7 @@ bool Piscsi::ExecuteCommand(CommandContext& context)
 			if (command.operation() == ATTACH || command.operation() == DETACH) {
 				// A new command with an empty device list is required here in order to return data for all devices
 				PbCommand cmd;
-				response.GetDevicesInfo(controller_manager.GetAllDevices(), result, cmd, context.GetDefaultFolder());
+				response.GetDevicesInfo(controller_manager.GetAllDevices(), result, cmd, piscsi_image.GetDefaultFolder());
 				context.WriteResult(result);
 				return result.status();
 			}
