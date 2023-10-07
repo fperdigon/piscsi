@@ -11,7 +11,6 @@
 
 #include "hal/bus.h"
 #include "controllers/controller_manager.h"
-#include "piscsi/piscsi_response.h"
 #include <unordered_set>
 
 class DeviceFactory;
@@ -56,8 +55,6 @@ public:
 private:
 
 	static bool CheckForReservedFile(const CommandContext&, const string&);
-
-	const PiscsiResponse piscsi_response;
 
 	BUS& bus;
 
