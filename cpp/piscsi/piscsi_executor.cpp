@@ -113,6 +113,7 @@ bool PiscsiExecutor::ProcessCmd(const CommandContext& context)
 	const bool reserved = ranges::find_if_not(command.devices(), [&] (const auto& device)
 			{ return ProcessDeviceCmd(context, device, true); }) != command.devices().end();
 	StorageDevice::SetReservedFiles(reserved_files);
+
 	if (reserved) {
 		return false;
 	}
