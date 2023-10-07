@@ -446,7 +446,7 @@ bool Piscsi::ExecuteCommand(CommandContext& context)
 				return false;
 			}
 
-			return HandleDeviceListChange(context, result, command.operation());
+			return HandleDeviceListChange(context, command.operation());
 	}
 
 	return true;
@@ -458,12 +458,13 @@ bool Piscsi::ExecuteWithLock(CommandContext& context)
 	return executor->ProcessCmd(context);
 }
 
-bool Piscsi::HandleDeviceListChange(const CommandContext& context, PbResult& result, PbOperation operation)
+bool Piscsi::HandleDeviceListChange(const CommandContext& context, PbOperation operation) const
 {
 	// ATTACH and DETACH return the resulting device list
 	if (operation == ATTACH || operation == DETACH) {
 		// A command with an empty device list is required here in order to return data for all devices
 		PbCommand command;
+		PbResult result;
 		response.GetDevicesInfo(controller_manager.GetAllDevices(), result, command, piscsi_image.GetDefaultFolder());
 		context.WriteResult(result);
 		return result.status();
