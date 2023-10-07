@@ -446,7 +446,7 @@ bool Piscsi::ExecuteCommand(CommandContext& context)
 				return false;
 			}
 
-			return HandleDeviceListChange(context, command.operation(), result);
+			return HandleDeviceListChange(context, result, command.operation());
 	}
 
 	return true;
@@ -458,7 +458,7 @@ bool Piscsi::ExecuteWithLock(CommandContext& context)
 	return executor->ProcessCmd(context);
 }
 
-bool Piscsi::HandleDeviceListChange(CommandContext& context, PbOperation operation, PbResult& result)
+bool Piscsi::HandleDeviceListChange(const CommandContext& context, PbResult& result, PbOperation operation)
 {
 	// ATTACH and DETACH return the resulting device list
 	if (operation == ATTACH || operation == DETACH) {

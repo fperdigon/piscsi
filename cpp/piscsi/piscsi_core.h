@@ -53,7 +53,7 @@ private:
 
 	bool ExecuteCommand(CommandContext&);
 	bool ExecuteWithLock(CommandContext&);
-	bool HandleDeviceListChange(CommandContext&, PbOperation, PbResult&);
+	bool HandleDeviceListChange(const CommandContext&, PbResult&, PbOperation);
 
 	bool SetLogLevel(const string&) const;
 
