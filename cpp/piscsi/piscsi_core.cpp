@@ -354,31 +354,26 @@ bool Piscsi::ExecuteCommand(CommandContext& context)
 
 		case DEVICE_TYPES_INFO:
 			response.GetDeviceTypesInfo(*result.mutable_device_types_info());
-			context.WriteSuccessResult(result);
-			break;
+			return context.WriteSuccessResult(result);
 
 		case SERVER_INFO:
 			response.GetServerInfo(*result.mutable_server_info(), controller_manager.GetAllDevices(),
 					executor->GetReservedIds(), piscsi_image.GetDefaultFolder(),
 					GetParam(command, "folder_pattern"), GetParam(command, "file_pattern"), piscsi_image.GetDepth());
-			context.WriteSuccessResult(result);
-			break;
+			return context.WriteSuccessResult(result);
 
 		case VERSION_INFO:
 			response.GetVersionInfo(*result.mutable_version_info());
-			context.WriteSuccessResult(result);
-			break;
+			return context.WriteSuccessResult(result);
 
 		case LOG_LEVEL_INFO:
 			response.GetLogLevelInfo(*result.mutable_log_level_info());
-			context.WriteSuccessResult(result);
-			break;
+			return context.WriteSuccessResult(result);
 
 		case DEFAULT_IMAGE_FILES_INFO:
 			response.GetImageFilesInfo(*result.mutable_image_files_info(), piscsi_image.GetDefaultFolder(),
 					GetParam(command, "folder_pattern"), GetParam(command, "file_pattern"), piscsi_image.GetDepth());
-			context.WriteSuccessResult(result);
-			break;
+			return context.WriteSuccessResult(result);
 
 		case IMAGE_FILE_INFO:
 			if (string filename = GetParam(command, "file"); filename.empty()) {
@@ -401,23 +396,19 @@ bool Piscsi::ExecuteCommand(CommandContext& context)
 
 		case NETWORK_INTERFACES_INFO:
 			response.GetNetworkInterfacesInfo(*result.mutable_network_interfaces_info());
-			context.WriteSuccessResult(result);
-			break;
+			return context.WriteSuccessResult(result);
 
 		case MAPPING_INFO:
 			response.GetMappingInfo(*result.mutable_mapping_info());
-			context.WriteSuccessResult(result);
-			break;
+			return context.WriteSuccessResult(result);
 
 		case OPERATION_INFO:
 			response.GetOperationInfo(*result.mutable_operation_info(), piscsi_image.GetDepth());
-			context.WriteSuccessResult(result);
-			break;
+			return context.WriteSuccessResult(result);
 
 		case RESERVED_IDS_INFO:
 			response.GetReservedIds(*result.mutable_reserved_ids_info(), executor->GetReservedIds());
-			context.WriteSuccessResult(result);
-			break;
+			return context.WriteSuccessResult(result);
 
 		case SHUT_DOWN:
 			return ShutDown(context, GetParam(command, "mode"));
