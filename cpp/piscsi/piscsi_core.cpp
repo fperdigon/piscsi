@@ -442,8 +442,12 @@ bool Piscsi::ExecuteCommand(CommandContext& context)
 
 		// The remaining commands can only be executed when the target is idle
 		default:
-			scoped_lock<mutex> lock(execution_locker);
-			const bool status = executor->ProcessCmd(context);
+			bool status;
+
+			{
+				scoped_lock<mutex> lock(execution_locker);
+				status = executor->ProcessCmd(context);
+			}
 
 			// ATTACH and DETACH return the device list
 			if (status && (command.operation() == ATTACH || command.operation() == DETACH)) {
