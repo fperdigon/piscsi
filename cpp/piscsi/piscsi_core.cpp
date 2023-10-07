@@ -85,7 +85,7 @@ void Piscsi::CleanUp()
 
 	executor->DetachAll();
 
-	// TODO Check why there are rare cases where bus is NULL
+	// TODO Check why there are rare cases where bus is NULL even though it is a unique_ptr
 	bus->Cleanup();
 }
 
