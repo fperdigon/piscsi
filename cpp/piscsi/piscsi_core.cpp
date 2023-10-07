@@ -446,14 +446,7 @@ bool Piscsi::ExecuteCommand(CommandContext& context)
 				return false;
 			}
 
-			// ATTACH and DETACH return the resulting device list
-			if (command.operation() == ATTACH || command.operation() == DETACH) {
-				// A new command with an empty device list is required here in order to return data for all devices
-				PbCommand cmd;
-				response.GetDevicesInfo(controller_manager.GetAllDevices(), result, cmd, piscsi_image.GetDefaultFolder());
-				context.WriteResult(result);
-				return result.status();
-			}
+			return HandleDeviceListChange(context, command.operation(), result);
 	}
 
 	return true;
@@ -463,6 +456,20 @@ bool Piscsi::ExecuteWithLock(CommandContext& context)
 {
 	scoped_lock<mutex> lock(execution_locker);
 	return executor->ProcessCmd(context);
+}
+
+bool Piscsi::HandleDeviceListChange(CommandContext& context, PbOperation operation, PbResult& result)
+{
+	// ATTACH and DETACH return the resulting device list
+	if (operation == ATTACH || operation == DETACH) {
+		// A command with an empty device list is required here in order to return data for all devices
+		PbCommand command;
+		response.GetDevicesInfo(controller_manager.GetAllDevices(), result, command, piscsi_image.GetDefaultFolder());
+		context.WriteResult(result);
+		return result.status();
+	}
+
+	return true;
 }
 
 int Piscsi::run(span<char *> args)
