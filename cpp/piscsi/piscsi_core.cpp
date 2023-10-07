@@ -506,8 +506,7 @@ int Piscsi::run(span<char *> args)
 	if (const string error = service.Init([this] (CommandContext& context) {
 			context.SetDefaultFolder(piscsi_image.GetDefaultFolder());
 			return ExecuteCommand(context);
-		}, port);
-		!error.empty()) {
+		}, port); !error.empty()) {
 		cerr << "Error: " << error << endl;
 
 		CleanUp();
