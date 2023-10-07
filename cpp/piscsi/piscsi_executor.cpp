@@ -381,11 +381,9 @@ bool PiscsiExecutor::ShutDown(const CommandContext& context, const string& mode)
 	PbResult result;
 	result.set_status(true);
 
-	// The PiSCSI shutdown mode is "rascsi" instead of "piscsi" for backwards compatibility
+	// The shutdown mode is "rascsi" instead of "piscsi" for backwards compatibility
 	if (mode == "rascsi") {
 		spdlog::info("PiSCSI shutdown requested");
-
-		context.WriteResult(result);
 
 		return true;
 	}

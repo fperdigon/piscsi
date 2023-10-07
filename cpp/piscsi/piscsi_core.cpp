@@ -421,7 +421,8 @@ bool Piscsi::ExecuteCommand(CommandContext& context)
 
 		case SHUT_DOWN:
 			if (executor->ShutDown(context, GetParam(command, "mode"))) {
-				TerminationHandler(0);
+				context.ReturnSuccessStatus();
+				CleanUp();
 			}
 			break;
 
@@ -429,8 +430,6 @@ bool Piscsi::ExecuteCommand(CommandContext& context)
 			context.ReturnSuccessStatus();
 			break;
 
-		// TODO The image operations below can most likely directly be executed without calling the executor,
-		// because they do not require the target to be idle
 		case CREATE_IMAGE:
 			return piscsi_image.CreateImage(context);
 
