@@ -48,6 +48,7 @@ private:
 
 	inline static const vector<string> EMPTY_VECTOR;
 
+	// TODO Try to get rid of this field
 	const DeviceFactory device_factory;
 
 	[[no_unique_address]] const StatisticsCollector collector;
