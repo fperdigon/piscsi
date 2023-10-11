@@ -26,7 +26,7 @@ class PiscsiResponse
 {
 public:
 
-	PiscsiResponse() = default;
+	PiscsiResponse() {};
 	~PiscsiResponse() = default;
 
 	bool GetImageFile(PbImageFile&, const string&, const string&) const;
