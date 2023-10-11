@@ -26,7 +26,7 @@ class PiscsiResponse
 {
 public:
 
-	PiscsiResponse() {};
+	PiscsiResponse() {}; //NOSONAR Using default does not work with the bookworm clang++ compiler
 	~PiscsiResponse() = default;
 
 	bool GetImageFile(PbImageFile&, const string&, const string&) const;
